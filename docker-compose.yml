@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    build: 
+      context: ./postgressql
+    ports:
+      - "5432:5432"
+    hostname: db
+    domainname: localdomain
+    volumes:
+      - ./data/docker/db:/var/lib/postgresql/data
+    env_file: postgressql.env
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 50M
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
